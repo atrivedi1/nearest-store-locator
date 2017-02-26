@@ -1,9 +1,11 @@
 <!DOCTYPE HTML>
+
 <html>
   <head>
     <link rel="shortcut icon" href="">
     <title>Store Locator</title>
     <link rel="stylesheet" type="text/css" href="./styles.css">
+    <script data-require="jquery@*" data-semver="2.1.1" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   </head>
   
   <body>
@@ -11,14 +13,22 @@
       Nearest Store Locator
     </h1>
 
-    <div class="form-container">
-        <form id="input-form" method="post">
-            <input class="input-field" type="text" placeholder="e.g.1770 Union St, San Francisco, CA 94123">
-            <input class="submit-button" type="submit" value="Submit">
-        </form>
+    <div id="app-container">
+      <div class="form-container">
+          <form id="input-form" method="post">
+              <input id="address-search" type="text" placeholder="e.g.1770 Union St, San Francisco, CA 94123">
+              <input class="submit-button" type="submit" value="Submit">
+          </form>
+      </div>
+
+      <div id="map-container">
+        <div id="map"></div>
+      <div>
     </div>
 
     <script src="./store_locator.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwGQ69hGt88WVfXaGXYQCHIYD2kuBoRVo&libraries=places&callback=initMap"
+        async defer></script>
   </body>
 </html>
 

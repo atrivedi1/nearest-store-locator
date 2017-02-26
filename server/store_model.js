@@ -6,12 +6,12 @@ mongoose.connect(database);
 var Schema = mongoose.Schema;
 
 var storeSchema = new Schema({
-  Store_Name:  String,
-  Store_Location: String,
-  Address:   String,
+  "Store Name":  String,
+  "Store Location": String,
+  Address: String,
   City: String,
   State: String,
-  Zip_Code: String,
+  "Zip Code": String,
   Latitude: String,
   Longitude: String,
   County: String
