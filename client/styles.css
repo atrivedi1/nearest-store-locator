@@ -19,6 +19,24 @@ body {
   padding-left: 16px;
 }
 
+/*#app-notifications {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  text-align: center;
+  box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px 0px;
+  box-sizing: border-box;
+  background-color: #e69999;
+  font-family: Lato, Arial, serif;
+  font-size: 16px;
+  font-weight: bold;
+  list-style-image: none;
+  list-style-position: outside;
+  list-style-type: none;
+  position: relative;
+  margin-left: 20px;
+  margin-right: 20px;
+}*/
+
 #app-container {
   text-align: center;
 }
@@ -29,8 +47,8 @@ body {
 }
 
 #address-search {
-    width: 400px;
-    font-size: 18px;
+    width: 450px;
+    font-size: 16px;
 }
 
 #map-container {
