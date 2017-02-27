@@ -17,6 +17,6 @@ var storeSchema = new Schema({
   County: String
 });
 
-var storeModel = mongoose.model("Store", storeSchema);
+var storeModel = mongoose.model("Store", storeSchema, "store_locations");
 
 module.exports = storeModel;
