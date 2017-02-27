@@ -57,6 +57,7 @@ $( document ).ready(function(){
           marker.setPosition(place.geometry.location);
           marker.setVisible(true);
           formattedAddressFromGooglePlacesAPI = place.formatted_address;
+          console.log("formatted address from google places api", formattedAddressFromGooglePlacesAPI)
           handleUserInput(formattedAddressFromGooglePlacesAPI);
         });
       }
@@ -72,6 +73,7 @@ $( document ).ready(function(){
     function parseAddress(address) {
        var addressArr = address.split(" ");
        var parsedAddressStr = addressArr.join("+");
+       console.log("parsed address string -->", parsedAddressStr)
        return parsedAddressStr;
     }
 
