@@ -10,6 +10,10 @@ var app = express();
 //middleware
 app.use(express.static('client'));
 app.use(bodyParser.json());
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
   
 //connect on routes
 require('./server/routes.js')(app)
