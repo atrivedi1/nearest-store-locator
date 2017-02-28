@@ -29,8 +29,8 @@ For the purposes of this exercise, the addresses are compared to stub store loca
 3. In newly created folder, run the following commands:
   - 'npm install'
   - 'npm run start'
-4. Change the name of the "config.demo.js" file to "config.js"
-5. Inside of your new config.js file, inside of the place holder empty string, add your own google api key. You can get one here:
+4. Change the name of the "api_keys_demo.js" file in the client/config folder to "api_keys.js"
+5. Inside of your new api_keys.js file, inside of the placeholder empty string, add your own google api key. You can get one here:
   -https://developers.google.com/maps/documentation/javascript/get-api-key
 
 ##Testing

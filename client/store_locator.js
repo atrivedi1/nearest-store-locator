@@ -1,13 +1,15 @@
 $( document ).ready(function(){
 ////////////////////////////////////////IMPORTANT VARIABLES///////////////////////////////////////////////////
     //Google
+    var googlePlacesApiUrl = "https://maps.googleapis.com/maps/api/js?key=" + GOOGLE_KEY + "&libraries=places&callback=initMap";
     var googleGeocodesApiBaseUri = "https://maps.googleapis.com/maps/api/geocode/json?address=";
     var formattedAddressFromGooglePlacesAPI;
     var marker;
 
     //DOM
+    $("#google-places-api").attr('src', googlePlacesApiUrl);
     var nearestStoreDiv = document.getElementById("nearest-store")
-
+    
 ////////////////////////////////////////GOOGLE API FUNCTIONS///////////////////////////////////////////////////
     //init a map and tie it to autocomplete functionality 
     window.initMap = function() {
