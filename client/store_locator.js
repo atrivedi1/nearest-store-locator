@@ -1,9 +1,6 @@
 $( document ).ready(function(){
-
 ////////////////////////////////////////IMPORTANT VARIABLES///////////////////////////////////////////////////
     //Google
-    var GOOGLE_KEY = process.env.GOOGLE_KEY;
-    var googlePlacesApiUri = "https://maps.googleapis.com/maps/api/js?key=" + GOOGLE_KEY + "&libraries=places&callback=initMap";
     var googleGeocodesApiBaseUri = "https://maps.googleapis.com/maps/api/geocode/json?address=";
     var formattedAddressFromGooglePlacesAPI;
     var marker;
@@ -12,21 +9,6 @@ $( document ).ready(function(){
     var nearestStoreDiv = document.getElementById("nearest-store")
 
 ////////////////////////////////////////GOOGLE API FUNCTIONS///////////////////////////////////////////////////
-    //connect to google places api
-    $.ajax({
-        url: googlePlacesApiUri,
-        dataType: 'json',    
-
-        success: function(results) {
-            console.log("Successfully connect to google places api")
-        },
-
-        error: function(err) {
-            console.log("Problem fetching closest store: ", err)
-            window.alert("Hmm. Having issues connecting to Google")
-        }
-    });
-
     //init a map and tie it to autocomplete functionality 
     window.initMap = function() {
         //create new map, init it in san francisco
