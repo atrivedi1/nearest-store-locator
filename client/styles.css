@@ -1,64 +1,72 @@
-
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
 /* BODY + HEADER */
 body {
-  font-family: "Roboto", helvetica, arial, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
+ font-family: "Roboto", helvetica, arial, sans-serif;
+ font-size: 16px;
+ font-weight: 400;
+ margin: 0;
 }
 
 .header-row {
-  margin-top: 10px;
-  height: 120px;
-  background: #161a1d;
-  text-align: center;
-  font-size: 80px;
-  color: azure;
-  padding-top: 16px;
-  padding-left: 16px;
+ margin-top: 10px;
+ height: 80px;
+ background: #161a1d ;
+ text-align: center;
+ font-size: 64px;
+ color: azure;
+ padding-top: 16px;
+ padding-left: 16px;
+ margin-bottom: 30px;
+ box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
 }
-
-/*#app-notifications {
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-  text-align: center;
-  box-shadow: rgba(0, 0, 0, 0.0980392) 0px 2px 4px 0px;
-  box-sizing: border-box;
-  background-color: #e69999;
-  font-family: Lato, Arial, serif;
-  font-size: 16px;
-  font-weight: bold;
-  list-style-image: none;
-  list-style-position: outside;
-  list-style-type: none;
-  position: relative;
-  margin-left: 20px;
-  margin-right: 20px;
-}*/
 
 #app-container {
   text-align: center;
 }
 
 .form-container {
-    text-align: center;
-    margin-bottom: 30px;
+   text-align: center;
+   margin-bottom: 20px;
 }
 
 #address-search {
-    width: 450px;
-    font-size: 16px;
+   width: 450px;
+   font-size: 16px;
+}
+
+#nearest-store-container {
+ margin-bottom: 20px;
+ font-weight: bold;
+ margin-left: 10px;
+ margin-right: 10px;
 }
 
 #map-container {
-    text-align: center;
+   margin-top: 25px;
+   text-align: center;
 }
 
 #map {
-    margin: 0 auto;
-    height: 400px;
-    width: 600px;
+ box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.75);
+ margin: 15px auto;
+ height: 400px;
+ width: 600px;
 }
 
-
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+ padding-left: 3px;
+ font-size: 16px;
+}
+::-moz-placeholder { /* Firefox 19+ */
+ padding-left: 3px;
+ font-size: 16px;
+}
+:-ms-input-placeholder { /* IE 10+ */
+ padding-left: 3px;
+ font-size: 16px;
+}
+:-moz-placeholder { /* Firefox 18- */
+ padding-left: 3px;
+ font-size: 16px;
+}

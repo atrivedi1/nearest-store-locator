@@ -1,19 +1,40 @@
 $( document ).ready(function(){
 
-////////////////////////////////////////KEY VARIABLES///////////////////////////////////////////////////
-    var formattedAddressFromGooglePlacesAPI;
+////////////////////////////////////////IMPORTANT VARIABLES///////////////////////////////////////////////////
+    //Google
+    var GOOGLE_KEY = process.env.GOOGLE_KEY;
+    var googlePlacesApiUri = "https://maps.googleapis.com/maps/api/js?key=" + GOOGLE_KEY + "&libraries=places&callback=initMap";
     var googleGeocodesApiBaseUri = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    var formattedAddressFromGooglePlacesAPI;
+    var marker;
+
+    //DOM
+    var nearestStoreDiv = document.getElementById("nearest-store")
 
 ////////////////////////////////////////GOOGLE API FUNCTIONS///////////////////////////////////////////////////
-    //init a map and tie it autocomplete functionality 
+    //connect to google places api
+    $.ajax({
+        url: googlePlacesApiUri,
+        dataType: 'json',    
+
+        success: function(results) {
+            console.log("Successfully connect to google places api")
+        },
+
+        error: function(err) {
+            console.log("Problem fetching closest store: ", err)
+            window.alert("Hmm. Having issues connecting to Google")
+        }
+    });
+
+    //init a map and tie it to autocomplete functionality 
     window.initMap = function() {
-        //create new map;
+        //create new map, init it in san francisco
         var map = new google.maps.Map(document.getElementById('map'), {
           center: {lat: 37.7749, lng: -122.4194},
           zoom: 13
         });
-
-
+  
         //add autocomplete functionality to address-search element and bind it to map, limiting it to addresses
         var input = document.getElementById('address-search');
         
@@ -25,76 +46,57 @@ $( document ).ready(function(){
         var autocomplete = new google.maps.places.Autocomplete(input, options);
         autocomplete.bindTo('bounds', map);
  
-        //create map marker
-        var marker = new google.maps.Marker({
-          map: map,
-          anchorPoint: new google.maps.Point(0, -29)
-        });
-
-        //add a listener for autocomplete
+        //add a listener for autocomplete  
         autocomplete.addListener('place_changed', function() {
-          marker.setVisible(false);
-          var place = autocomplete.getPlace();
-          
-          //if invalid submission is given, return error to user
-          if (!place.geometry) {
-            window.alert("No details available for input: '" + place.name + "'");
-            return;
-          }
+            var place = autocomplete.getPlace();
+            //if invalid submission is given, return error to user
+            if (!place.geometry) {
+              window.alert("No details available for input: '" + place.name + "'");
+              return;
+            }
 
-          // If the place is in current viewport, center on location 
-          if (place.geometry.viewport) {
-            map.fitBounds(place.geometry.viewport);
-          } 
-          
-          //If place is not in current viewport, then find/center around location
-          else {
-            map.setCenter(place.geometry.location);
-            map.setZoom(17); 
-          }
-
-          //place marker on place on map
-          marker.setPosition(place.geometry.location);
-          marker.setVisible(true);
-          formattedAddressFromGooglePlacesAPI = place.formatted_address;
-          console.log("formatted address from google places api", formattedAddressFromGooglePlacesAPI)
-          handleUserInput(formattedAddressFromGooglePlacesAPI);
+            //otherwise handle handleUserInput
+            formattedAddressFromGooglePlacesAPI = place.formatted_address;
+            handleUserInput(map,formattedAddressFromGooglePlacesAPI);
         });
       }
 
 /////////////////////////////////////////HELPER FUNCTIONS//////////////////////////////////////////////////    
-    function handleUserInput(inputtedAddress) {
+    function handleUserInput(map, inputtedAddress) {
        var addressInputField = document.getElementById("address-search");
        var parsedAddressInfo = parseAddress(formattedAddressFromGooglePlacesAPI);
-       fetchAddressCoordinates(parsedAddressInfo);
+       fetchAddressCoordinates(map, parsedAddressInfo);
        addressInputField.value = "";
     }
     
     function parseAddress(address) {
        var addressArr = address.split(" ");
        var parsedAddressStr = addressArr.join("+");
-       console.log("parsed address string -->", parsedAddressStr)
        return parsedAddressStr;
     }
 
-    function fetchAddressCoordinates(addressStr) {
-        //fetch address coordinates from google 
+    //fetches address coordinates from google 
+    function fetchAddressCoordinates(map, addressStr) {
+
         $.ajax({
-            method: "GET",
+            type: "GET",
             url: googleGeocodesApiBaseUri + addressStr,  
-            dataType: 'json',    
+            dataType: 'json', 
+
             success: function(data) {
                 var results = data.results[0];
-
+ 
                 var coordinates = {
                     lat: results.geometry.location.lat,
                     lng: results.geometry.location.lng,
-                    city: results.address_components[3].long_name,
-                    state: results.address_components[5].short_name
+                    //using formatted_address vs. address_components because data more predictable
+                    city: results.formatted_address.split(",")[1],
+                    state: results.formatted_address.split(",")[2].slice(1,3)
                 };
 
-                findNearestStore(coordinates);
+                findNearestStore(map, coordinates);
             },
+
             error: function(err) {
                 console.log("Problem fetching data from Google Geocodes API: ", err)
                 window.alert("Uh oh. You might want to double check your address. Try something like:" +
@@ -103,15 +105,18 @@ $( document ).ready(function(){
         });
     }
 
-    function findNearestStore(coordinates) {
+    //fetches nearest store from db
+    function findNearestStore(map, coordinates) {
         $.ajax({
-            method: "POST",
-            url: '/',
+            type: "POST",
+            url: '/store',
             data: coordinates,
             dataType: 'json',    
 
             success: function(nearestStore) {
                 console.log("Successfully retrieved closest store ", nearestStore)
+                renderNearestStoreMarker(map, nearestStore);
+                renderNearestStoreAddress(nearestStore);
             },
 
             error: function(err) {
@@ -121,6 +126,36 @@ $( document ).ready(function(){
         });
     }
 
+    function renderNearestStoreMarker(map, nearestStore) {
+      var nearestStoreCoordinates = { lat: +nearestStore.lat, lng: +nearestStore.lng }
+
+      //update map focus
+      map.setCenter(nearestStoreCoordinates);
+      map.setZoom(15); 
+
+      //delete old marker and add new one to map
+      if(marker) {
+          marker.setMap(null);
+      }
+
+      marker = new google.maps.Marker({
+          position: nearestStoreCoordinates,
+          title: nearestStore.name
+      });
+
+      marker.setMap(map);
+    }
+
+    function renderNearestStoreAddress(nearestStore) {
+        var name = nearestStore.name;
+        var address = nearestStore.address;
+        var nearestStoreStr = name + ": " +  address;
+        nearestStoreDiv.innerText = nearestStoreStr;
+    }
+
 ////////////////////////////////////////UI CLICK HANDLERS///////////////////////////////////////////////////
-     
+    //prevents default when user presses enter
+    $('#address-search').keydown(function (e) {
+        if (e.which == 13 && $('#input-form').length) return false;
+    });  
 });

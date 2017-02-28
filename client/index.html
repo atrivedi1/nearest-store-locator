@@ -15,24 +15,23 @@
 
     <div id="app-container">
 
-      <!--<div id="app-notifications">
-          placeholder for user notifications
-      </div>-->
-
       <div class="form-container">
-          <form id="input-form" method="post" action="/">
-              <input id="address-search" type="text" name="address" placeholder="e.g. 2016 California Street, San Francisco, CA, United States">
+          <form id="input-form" >
+              <input id="address-search" type="text" name="address" placeholder="Enter in an address" autofocus/>
           </form>
       </div>
 
+      <div id="nearest-store-container">
+        <div id="nearest-store"></div>
+      </div>
+
       <div id="map-container">
-        <div id="map"></div>
+        <div id="map"></div>        
       <div>
     </div>
 
     <script src="./store_locator.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwGQ69hGt88WVfXaGXYQCHIYD2kuBoRVo&libraries=places&callback=initMap"
-        async defer></script>
   </body>
 </html>
+
 

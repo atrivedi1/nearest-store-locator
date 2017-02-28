@@ -13,13 +13,12 @@ function calcDistance(lat1, lng1, lat2, lng2, unit) {
 	dist = Math.acos(dist)
 	dist = dist * 180/Math.PI
 	dist = dist * 60 * 1.1515
-
 	if (unit=="K") { dist = dist * 1.609344 }
 	if (unit=="N") { dist = dist * 0.8684 }
-
 	return dist;
 }
 
+//leveages calcDistance function to find nearestStore
 function nearestStore(storeData, targetLat, targetLng) {
     var minDistance;
     var nearestStoreData;
@@ -56,18 +55,17 @@ module.exports = {
                 console.log("Problem querying db: ", err);
             } else {
                 console.log("successfully retrieved data from db")
-
                 //clean up data returned from db query               
                 var storeData = data.map(function(completeStoreInfo) {
                     var storeInfo = {};
-                    var storeStateZip = completeStoreInfo.State + " " + completeStoreInfo["Zip Code"].slice(0,5);
-
-                    storeInfo.name = completeStoreInfo['Store Name'];
-
-                    storeInfo.address = completeStoreInfo.Address.split(" ").join("+") + ",+" +
-                                        completeStoreInfo.City.split(" ").join("+") + ",+" +
-                                        storeStateZip.split(" ").join("+");
+                    var cleanedUpStoreZip = completeStoreInfo["Zip Code"].slice(0,5);
                     
+                    storeInfo.name = completeStoreInfo['Store Name'];
+                    storeInfo.address = completeStoreInfo.Address + ", " +
+                                        completeStoreInfo.City + ", " + 
+                                        completeStoreInfo.State + ", " +
+                                        cleanedUpStoreZip; 
+                                   
                     storeInfo.lat = completeStoreInfo.Latitude;
                     storeInfo.lng = completeStoreInfo.Longitude;
                     
@@ -76,7 +74,6 @@ module.exports = {
                 
                 //determine nearest store
                 var nearestStoreInfo = nearestStore(storeData, targetLat, targetLng);
-                console.log(nearestStoreInfo);
                 //return nearest store
                 res.send(nearestStoreInfo);
             }
