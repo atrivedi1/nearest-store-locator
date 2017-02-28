@@ -77,6 +77,7 @@ module.exports = {
                 console.log(nearestStoreInfo);
                 //return nearest store
                 res.send(nearestStoreInfo);
+                //for testing purposes
                 cb();
             }
         })
