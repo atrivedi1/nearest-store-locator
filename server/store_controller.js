@@ -74,7 +74,6 @@ module.exports = {
                 
                 //determine nearest store
                 var nearestStoreInfo = nearestStore(storeData, targetLat, targetLng);
-                console.log(nearestStoreInfo);
                 //return nearest store
                 res.send(nearestStoreInfo);
                 //for testing purposes
