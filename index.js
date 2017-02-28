@@ -1,11 +1,8 @@
 'use strict'
 
 //dependencies
-var dotenv = require('dotenv').config();
 var express = require('express');
 var bodyParser = require('body-parser');
-
-console.log("process", process.env.GOOGLE_KEY);
 
 //create instance of express
 var app = express();
